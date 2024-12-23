@@ -41,7 +41,7 @@ def detect_objects(model, image_path, output_path, output_path_rot):
                 angle_sum += get_angle_to_rot_from_result(obb)
             # angle_to_rot - значение, на которое нужно повернуть изображение, чтобы оно встало под прямым углом
             angle_to_rot = angle_sum / len(result.obb)
-            # Agle: - выводится значение, на которое повёрнуто изображение (на сколько оно отлично от прямого угла)+-+
+            # Agle: - выводится значение, на которое повёрнуто изображение (на сколько оно отлично от прямого угла)
             print(f"Angle: {-angle_to_rot:.2f} degrees")
             print(f"Angle to rot: {angle_to_rot:.2f} degrees")
         else:
