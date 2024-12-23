@@ -11,7 +11,7 @@ def get_angle_to_rot_from_result(obb):
     return round(angle_degrees, 2)
 
 
-def get_rotateg_image(img, angle_to_rot):
+def get_rotated_image(img, angle_to_rot):
     height, width = img.shape[:2]
     center = (width // 2, height // 2)
     rotation_matrix = cv2.getRotationMatrix2D(center, angle_to_rot, 1.0)
@@ -47,16 +47,20 @@ def detect_objects(model, image_path, output_path, output_path_rot):
         else:
             print("No oriented bounding boxes detected.")
 
-    rotated_image = get_rotateg_image(img, angle_to_rot)
+    rotated_image = get_rotated_image(img, angle_to_rot)
     cv2.imwrite(output_path, annotated_img)
     cv2.imwrite(output_path_rot, rotated_image)
 
 
 model = YOLO('models/pubtab_1548_aug.pt')
-for image_name in os.listdir('./imgs'):
-    input_path = f"imgs/{image_name}"
+allowed_extensions = ['jpg', 'jpeg', 'png']
+for image_name in os.listdir('images'):
+    image_name_parts = image_name.split('.')
+    if image_name_parts[-1] not in allowed_extensions:
+        continue
+    input_path = f"images/{image_name}"
     output_path = f"results/{image_name}"
-    output_path_rot = f"results/{image_name.split('.')[0] + '_rot.' + image_name.split('.')[1]}"
+    output_path_rot = f"results/{image_name_parts[0] + '_rot.' + image_name_parts[1]}"
     print(f"#########################")
     print(f"results/{image_name}")
     detect_objects(model, input_path, output_path, output_path_rot)
